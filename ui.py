@@ -1,40 +1,51 @@
-from address import address
-from movie import movie
+from scheduler import movie_list, scheduler
+from movie import movie, schedule
 
 class ui:
-    def __init__(self):                  #movie라는 입력값이 없는데 넣으면 에러뜸
-        self.address = address()
+    def __init__(self):                        # movie라는 입력값이 없는데 넣으면 에러뜸
+        self.movie_list = movie_list()         # movie는 코드 설게시점에서 ui 안에서 정의되지 않아. 객체가 만들어지고 movie 생기지. 
+        self.scheduler = scheduler()
 
-    def function_list(self):
+    def run(self):
         print("기능을 선택하시오")
         print("1. 영화목록 입력")
         print("2. 영화목록 보기")
         print("3. 영화목록 삭제")
-        print("4. 영화상영 스케줄표")
+        print("4. 영화 스케줄표 입력")
+        print("5. 영화 스케줄표 보기")
 
-
-    def run(self):
         while 1:                        # while == 1 이 아니야.
             op = input("번호를 입력하세요")
             if op == '1':
                 m1 = self.input_movie()
-                self.address.add_movie(m1)
+                self.movie_list.add_movie(m1)
             if op == '2':
-                for movie in self.address.get_list():
+                for movie in self.movie_list.get_list():
                     print(movie.title)
             if op == "3":
                 key = input("어떤 영화를 삭제하시겠습니까?")
-                self.address.del_list(key)
+                self.movie_list.del_list(key)
+            #schedule 입력
             if op == '4':
-                for movie in self.address.get_schedule():
-                    print(movie.time, movie.title, movie.room)
-                    # 시간대별로 정리하고 싶어.
-                    # sort로 정리 <- time이라는 형태로 입력값 받기
-
+                s1 = self.input_schedule()
+                self.scheduler.add_schedule(s1)     
+            #schedule 가져오기
+            if op == '5':
+                for movie in self.scheduler.get_schedule():  # 이런식으로도 수정할 수 있어.
+                    print(movie.time, movie.title, movie.room, movie.runtime)
 
 
     def input_movie(self):                        #입력값 쓸 필요가 없지. input으로 넣을거니까
         inputtitle = input('제목:')
         inputtime = int(input('시간:'))
+        return movie(inputtitle, inputtime)
+
+    def input_schedule(self):
+        inputtime = int(input('시간: '))
         inputroom = input('상영관: ')
-        return movie(inputtitle, inputtime, inputroom)
+        inputmovie = input('영화: ')
+        for movie in self.movie_list.get_list():
+            if movie.title == inputmovie:
+                title = movie.title
+                runtime = movie.runtime
+        return schedule(inputtime, inputroom, title, runtime)
