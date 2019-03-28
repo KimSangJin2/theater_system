@@ -5,12 +5,13 @@ class movie_list:
         self.movies = []
         self.movieConnector = movieConnector()
         
+        
     def add_movie(self, movie):
         self.movies.append(movie)
-        self.movieConnector.append_movie(movie)
+        
 
     def get_list(self):
-        return self.movieConnector.get_movies()  
+        return self.movies
 
     def del_list(self, key):
         for i, n in enumerate(self.movies):
@@ -21,13 +22,15 @@ class movie_list:
 class scheduler:
     def __init__(self):
         self.schedules = []
+        self.movieConnector = movieConnector()
 
     def add_schedule(self, schedule):
-        self.schedules.append(schedule)
+        self.movieConnector.append_movie(schedule)
 
     def get_schedule(self):
-        sorted_schedules = sorted(self.schedules, key = lambda schedule:schedule.time)
+        sorted_schedules = sorted(self.movieConnector.get_movies(), key = lambda schedule:schedule.time)
         return sorted_schedules
+        
 
 
 
