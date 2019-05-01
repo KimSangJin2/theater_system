@@ -1,0 +1,7 @@
+﻿<h> {{name}}의 블로그 </h>
+<br>
+<br>
+<br>
+{% for movie in movies %}
+  <li> 영화 제목 : {{ movie.title }}, 상영시간 : {{ movie.runtime }}</li>
+{% endfor %}
