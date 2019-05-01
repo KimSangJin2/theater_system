@@ -1,11 +1,12 @@
-from scheduler import movie_list, scheduler
-from movie import movie, schedule
+from scheduler import movie_list, schedule_list
+from movie import movie, movieUtil
+from schedule import schedule, scheduleUtil
 
 
 class ui:
     def __init__(self):                        # movie라는 입력값이 없는데 넣으면 에러뜸
         self.movie_list = movie_list()         # movie는 코드 설게시점에서 ui 안에서 정의되지 않아. 객체가 만들어지고 movie 생기지. 
-        self.scheduler = scheduler()
+        self.schedule_list = schedule_list()
 
     def run(self):
         print("기능을 선택하시오")
@@ -21,19 +22,19 @@ class ui:
                 m1 = self.input_movie()
                 self.movie_list.add_movie(m1)
             if op == '2':
-                for movie in self.movie_list.get_list():
+                for movie in self.movie_list.get_movie():
                     print(movie.title, movie.runtime)
             if op == "3":
                 key = input("어떤 영화를 삭제하시겠습니까?")
-                self.movie_list.del_list(key)
+                self.movie_list.del_movie(key)
             #schedule 입력
             if op == '4':
                 s1 = self.input_schedule()
-                self.scheduler.add_schedule(s1)     
+                self.schedule_list.add_schedule(s1)     
             #schedule 가져오기
             if op == '5':
-                for movie in self.scheduler.get_schedule():  # 이런식으로도 수정할 수 있어.
-                    print(movie.time, movie.title, movie.room, movie.runtime, movie.price)
+                for schedule in self.schedule_list.get_schedule():  # 이런식으로도 수정할 수 있어.
+                    print(schedule.time, schedule.title, schedule.room, schedule.runtime, schedule.price)
 
 
     def input_movie(self):                        #입력값 쓸 필요가 없지. input으로 넣을거니까
@@ -46,7 +47,7 @@ class ui:
         inputroom = input('상영관: ')
         inputmovie = input('영화: ')
         inputprice = int(input("가격: "))
-        for movie in self.movie_list.get_list():
+        for movie in self.movie_list.get_movie():
             if movie.title == inputmovie:
                 title = movie.title
                 runtime = movie.runtime
@@ -57,7 +58,7 @@ class ui:
         reserv_time = input("시간을 선택하시오. : ")
         reserv_number = int(input("인원을 선택하시오. : "))
         
-        for schedule in self.scheduler.get_schedule():
+        for schedule in self.schedule_list.get_schedule():
             if schedule.title == reserv_movie:
                 reserv_price = schedule.price
 
